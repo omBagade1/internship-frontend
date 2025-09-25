@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const API_URL = 'https://internship-backend-6d5q.onrender.com';
+
 export default function StudentForm() {
-  const [form, setForm] = useState({ name:'', email:'', education:'', skills:'', location:'' });
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    education: '',
+    skills: '',
+    location: ''
+  });
   const [loading, setLoading] = useState(false);
   const [recs, setRecs] = useState([]);
 
@@ -16,84 +24,59 @@ export default function StudentForm() {
     setRecs([]);
     try {
       const payload = { ...form };
-      const res = await axios.post('https://internship-backend-6d5q.onrender.com//recommend', payload);
+      const res = await axios.post(`${API_URL}/recommend`, payload);
       setRecs(res.data.recommendations || []);
     } catch (err) {
       console.error(err);
-      alert('Error fetching recommendations');
+      alert('Error fetching recommendations. Make sure your backend is live.');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="container">
-      {/* Student Form Card */}
-      <div className="card">
+    <div className="max-w-3xl mx-auto p-4">
+      <form onSubmit={handleSubmit} className="card">
         <div className="form-header">
           <h2>Student Profile</h2>
-          <p>Fill in your details to get internship recommendations</p>
+          <p>Fill your details to get internship recommendations</p>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input name="name" value={form.name} onChange={handleChange} placeholder="Name" />
+          <input name="email" value={form.email} onChange={handleChange} placeholder="Email" />
+          <input name="education" value={form.education} onChange={handleChange} placeholder="Education (e.g. B.Tech, CS)" />
+          <input name="location" value={form.location} onChange={handleChange} placeholder="Location preference" />
+          <textarea name="skills" value={form.skills} onChange={handleChange} placeholder="Skills (comma separated)" className="md:col-span-2"/>
+        </div>
+        <div className="form-actions">
+          <button type="submit" className="button-primary" disabled={loading}>
+            {loading ? 'Finding...' : 'Get Recommendations'}
+          </button>
+        </div>
+      </form>
 
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2">
-            <div>
-              <label className="form-label">Name</label>
-              <input name="name" value={form.name} onChange={handleChange} placeholder="Name" />
+      <div className="mt-8">
+        <h3 className="text-xl font-semibold mb-4">Recommended Internships</h3>
+        {recs.length === 0 && !loading && <p className="text-gray-500">No recommendations yet — submit your profile above.</p>}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {recs.map(r => (
+            <div key={r.id} className="card-rec">
+              <div>
+                <h4>{r.title}</h4>
+                <p>{r.company} • {r.location}</p>
+              </div>
+              <div className="mt-2 text-sm text-gray-400">
+                Skills: {(r.skills || []).join(', ')}
+              </div>
+              <div className="mt-1 text-sm text-green-400">
+                Matches: {(r.matchingSkills || []).join(', ')}
+              </div>
+              <div className="mt-1 text-right text-sm font-semibold">
+                {r.matchPercent}% match
+              </div>
             </div>
-
-            <div>
-              <label className="form-label">Email</label>
-              <input name="email" value={form.email} onChange={handleChange} placeholder="Email" />
-            </div>
-
-            <div>
-              <label className="form-label">Education</label>
-              <input name="education" value={form.education} onChange={handleChange} placeholder="B.Tech, CS" />
-            </div>
-
-            <div>
-              <label className="form-label">Location</label>
-              <input name="location" value={form.location} onChange={handleChange} placeholder="Preferred city" />
-            </div>
-
-            <div className="skills-group" style={{ gridColumn: 'span 2' }}>
-              <label className="form-label">Skills</label>
-              <textarea name="skills" value={form.skills} onChange={handleChange} placeholder="Skills (comma separated)"/>
-            </div>
-          </div>
-
-          <div className="form-actions">
-            <button type="submit" className="button-primary" disabled={loading}>
-              {loading ? 'Finding...' : 'Get Recommendations'}
-            </button>
-          </div>
-        </form>
-      </div>
-
-      {/* Recommendation Cards */}
-      <div className="recommendation-container">
-        {recs.length === 0 && !loading && (
-          <p style={{ color: '#888', marginTop: '1rem', textAlign: 'center' }}>
-            No recommendations yet — submit profile above.
-          </p>
-        )}
-
-        {recs.map(r => (
-          <div key={r.id} className="card-rec">
-            <h4>{r.title}</h4>
-            <p>{r.company} • {r.location}</p>
-            <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#aaa' }}>
-              Skills: {(r.skills || []).join(', ')}
-            </div>
-            <div style={{ marginTop: '0.25rem', fontSize: '0.85rem', color: '#4caf50' }}>
-              Matches: {(r.matchingSkills || []).join(', ')}
-            </div>
-            <div style={{ marginTop: '0.5rem', textAlign: 'right', fontWeight: 600 }}>
-              Match: {r.matchPercent}%
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
