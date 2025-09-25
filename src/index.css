@@ -1,0 +1,186 @@
+/* =========================
+   Root & Body
+========================= */
+:root {
+  --font-sans: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  /* Colors */
+  --color-bg: #0f0f0f;
+  --color-card-bg: #1a1a1a;
+  --color-text: #eaeaea;
+  --color-text-alt: #aaaaaa;
+  --color-text-faint: #888888;
+  --color-border: #333333;
+  --color-shadow: rgba(0, 0, 0, 0.6);
+  --color-button-primary-bg: linear-gradient(135deg, #4a4a4a, #2c2c2c);
+  --color-button-primary-hover: linear-gradient(135deg, #5c5c5c, #3a3a3a);
+
+  --radius: 0.75rem;
+
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  font-weight: 400;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  padding: 20px;
+}
+
+/* =========================
+   Card / Form Container
+========================= */
+.card {
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius);
+  padding: 3rem 4rem;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 15px 40px var(--color-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 60px var(--color-shadow);
+}
+
+/* =========================
+   Header & Typography
+========================= */
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.form-header h2 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.form-header p {
+  color: var(--color-text-faint);
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* =========================
+   Form Labels
+========================= */
+.form-label {
+  display: block;
+  color: var(--color-text-alt);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* =========================
+   Inputs & Textareas
+========================= */
+input, textarea {
+  width: 100%;
+  padding: 0.75rem 1.2rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background-color: #262626;
+  color: var(--color-text);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+input:focus, textarea:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+  outline: none;
+}
+
+/* =========================
+   Button Styles
+========================= */
+.button-primary {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 1.05rem;
+  padding: 0.85em 2.2em;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background: var(--color-button-primary-bg);
+  background-size: 200% 200%;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  transition: all 0.35s ease;
+}
+.button-primary:hover {
+  background: var(--color-button-primary-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+}
+.button-primary:active {
+  transform: translateY(-1px);
+}
+
+/* =========================
+   Grid Layout for Inputs
+========================= */
+.grid {
+  display: grid;
+  gap: 1.8rem 1.5rem;
+}
+.grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+@media(max-width:768px) {
+  .grid-cols-2 { grid-template-columns: 1fr; }
+  .card { padding: 2rem 2.5rem; }
+}
+
+/* =========================
+   Recommendation Cards
+========================= */
+.card-rec {
+  background-color: #1f1f1f;
+  border-radius: var(--radius);
+  padding: 1.5rem 2rem;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card-rec:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 45px rgba(0,0,0,0.6);
+}
+.card-rec h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.card-rec p {
+  color: var(--color-text-alt);
+  font-size: 0.9rem;
+}
+
+/* =========================
+   Form Actions
+========================= */
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+/* =========================
+   Recommendation Cards Container
+========================= */
+.recommendation-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.8rem; /* horizontal & vertical spacing */
+  width: 100%;
+  margin-top: 2.5rem;
+}
